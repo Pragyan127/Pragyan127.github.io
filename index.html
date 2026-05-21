@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pragyan Dhungana | MS CS @ UB | Medical AI Researcher</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0d0d0d;
+    --surface: #161616;
+    --border: rgba(255,255,255,0.08);
+    --text: #f0ede8;
+    --muted: #888880;
+    --accent: #c8b89a;
+    --accent2: #7eb8a4;
+    --tag-bg: rgba(200,184,154,0.1);
+    --tag-color: #c8b89a;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    font-size: 16px;
+    overflow-x: hidden;
+  }
+  ::selection { background: rgba(200,184,154,0.25); }
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1.2rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    background: rgba(13,13,13,0.85);
+    backdrop-filter: blur(12px);
+  }
+  .nav-logo { font-family: 'DM Serif Display', serif; font-size: 1.1rem; color: var(--accent); letter-spacing: 0.02em; }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.85rem; letter-spacing: 0.05em; text-transform: uppercase; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--text); }
+  section { padding: 6rem 4rem; max-width: 1100px; margin: 0 auto; }
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding-top: 8rem;
+    max-width: 100%;
+    padding-left: 8rem;
+    padding-right: 8rem;
+  }
+  .hero-inner { max-width: 700px; }
+  .hero-tag {
+    display: inline-block;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent2);
+    border: 1px solid rgba(126,184,164,0.3);
+    padding: 0.3rem 0.8rem;
+    border-radius: 2px;
+    margin-bottom: 2rem;
+  }
+  h1 { font-family: 'DM Serif Display', serif; font-size: clamp(3rem, 6vw, 5.5rem); line-height: 1.05; letter-spacing: -0.02em; color: var(--text); margin-bottom: 1.5rem; }
+  h1 em { font-style: italic; color: var(--accent); }
+  .hero-sub { font-size: 1.05rem; color: var(--muted); max-width: 480px; margin-bottom: 2.5rem; line-height: 1.8; }
+  .hero-links { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn { display: inline-block; padding: 0.7rem 1.6rem; border-radius: 2px; font-size: 0.85rem; letter-spacing: 0.05em; text-decoration: none; text-transform: uppercase; transition: all 0.2s; font-family: 'DM Sans', sans-serif; }
+  .btn-primary { background: var(--accent); color: #0d0d0d; font-weight: 500; }
+  .btn-primary:hover { background: #ddd0ba; }
+  .btn-ghost { border: 1px solid var(--border); color: var(--muted); }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+  .divider { border: none; border-top: 1px solid var(--border); max-width: 1100px; margin: 0 auto; }
+  .section-label { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent2); margin-bottom: 3rem; display: flex; align-items: center; gap: 1rem; }
+  .section-label::after { content: ''; height: 1px; width: 60px; background: rgba(126,184,164,0.4); display: block; }
+  h2 { font-family: 'DM Serif Display', serif; font-size: clamp(1.8rem, 3vw, 2.8rem); line-height: 1.1; margin-bottom: 1rem; font-weight: 400; }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: start; margin-top: 3rem; }
+  .about-text p { color: var(--muted); margin-bottom: 1.2rem; font-size: 1rem; line-height: 1.85; }
+  .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .stat-card { padding: 1.5rem; border: 1px solid var(--border); border-radius: 4px; background: var(--surface); }
+  .stat-num { font-family: 'DM Serif Display', serif; font-size: 2.2rem; color: var(--accent); line-height: 1; margin-bottom: 0.4rem; }
+  .stat-label { font-size: 0.8rem; color: var(--muted); letter-spacing: 0.03em; }
+  .pub-list { margin-top: 3rem; display: flex; flex-direction: column; gap: 1.5rem; }
+  .pub-card { padding: 2rem; border: 1px solid var(--border); border-radius: 4px; background: var(--surface); transition: border-color 0.2s; position: relative; overflow: hidden; }
+  .pub-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--accent); }
+  .pub-card:hover { border-color: rgba(200,184,154,0.3); }
+  .pub-venue { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent2); margin-bottom: 0.6rem; }
+  .pub-title { font-family: 'DM Serif Display', serif; font-size: 1.1rem; color: var(--text); margin-bottom: 0.7rem; line-height: 1.4; }
+  .pub-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.7; margin-bottom: 1rem; }
+  .pub-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .tag { font-size: 0.72rem; padding: 0.25rem 0.7rem; background: var(--tag-bg); color: var(--tag-color); border-radius: 2px; letter-spacing: 0.04em; }
+  .pub-doi { display: inline-block; margin-top: 0.8rem; font-size: 0.78rem; color: var(--accent2); text-decoration: none; border-bottom: 1px solid rgba(126,184,164,0.3); transition: border-color 0.2s; }
+  .pub-doi:hover { border-color: var(--accent2); }
+
+  /* PROJECTS */
+  .projects-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 3rem; }
+  .project-card { padding: 1.8rem; border: 1px solid var(--border); border-radius: 4px; background: var(--surface); transition: border-color 0.2s; }
+  .project-card:hover { border-color: rgba(200,184,154,0.2); }
+  .project-title { font-family: 'DM Serif Display', serif; font-size: 1.05rem; color: var(--text); margin-bottom: 0.5rem; }
+  .project-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.7; margin-bottom: 1rem; }
+  .project-stack { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .stack-tag { font-size: 0.7rem; padding: 0.2rem 0.6rem; border: 1px solid var(--border); color: var(--muted); border-radius: 2px; }
+
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
+  .skill-group { padding: 1.5rem; border: 1px solid var(--border); border-radius: 4px; background: var(--surface); }
+  .skill-group-title { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
+  .skill-pills { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .skill-pill { font-size: 0.78rem; padding: 0.3rem 0.7rem; border: 1px solid var(--border); border-radius: 2px; color: var(--muted); }
+
+  /* Fullstack note */
+  .fullstack-note {
+    margin-top: 2rem;
+    padding: 1.2rem 1.5rem;
+    border: 1px solid rgba(126,184,164,0.2);
+    border-radius: 4px;
+    background: rgba(126,184,164,0.05);
+    font-size: 0.88rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+  .fullstack-note strong { color: var(--accent2); font-weight: 500; }
+
+  .timeline { margin-top: 3rem; display: flex; flex-direction: column; gap: 2rem; }
+  .timeline-item { display: grid; grid-template-columns: 160px 1fr; gap: 2rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+  .timeline-item:last-child { border-bottom: none; }
+  .timeline-date { font-size: 0.8rem; color: var(--muted); padding-top: 0.2rem; letter-spacing: 0.03em; }
+  .timeline-title { font-family: 'DM Serif Display', serif; font-size: 1.1rem; color: var(--text); margin-bottom: 0.3rem; }
+  .timeline-org { font-size: 0.85rem; color: var(--accent2); margin-bottom: 0.6rem; }
+  .timeline-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.7; }
+  .badge { display: inline-block; font-size: 0.7rem; padding: 0.2rem 0.6rem; background: rgba(200,184,154,0.1); color: var(--accent); border-radius: 2px; margin-left: 0.5rem; vertical-align: middle; letter-spacing: 0.05em; }
+
+  .contact-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: start; margin-top: 3rem; }
+  .contact-text p { color: var(--muted); font-size: 1rem; line-height: 1.85; margin-bottom: 2rem; }
+  .contact-links { display: flex; flex-direction: column; gap: 1rem; }
+  .contact-link { display: flex; align-items: center; gap: 1rem; text-decoration: none; color: var(--muted); font-size: 0.9rem; transition: color 0.2s; padding: 1rem 1.2rem; border: 1px solid var(--border); border-radius: 4px; background: var(--surface); }
+  .contact-link:hover { color: var(--accent); border-color: rgba(200,184,154,0.3); }
+  .contact-link-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); display: block; margin-bottom: 0.2rem; }
+  .contact-link-val { font-size: 0.9rem; color: var(--text); }
+  footer { text-align: center; padding: 3rem; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.8rem; letter-spacing: 0.05em; }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+  .hero-tag { animation: fadeUp 0.6s ease both; }
+  h1 { animation: fadeUp 0.6s 0.1s ease both; }
+  .hero-sub { animation: fadeUp 0.6s 0.2s ease both; }
+  .hero-links { animation: fadeUp 0.6s 0.3s ease both; }
+
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .hero { padding: 7rem 1.5rem 4rem; }
+    section { padding: 4rem 1.5rem; }
+    .about-grid, .contact-inner, .projects-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .timeline-item { grid-template-columns: 1fr; gap: 0.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Pragyan Dhungana</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#publications">Research</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">Medical AI · Deep Learning · Biomedical Imaging</div>
+    <h1>Pragyan<br><em>Dhungana</em></h1>
+    <p class="hero-sub">Incoming MS Computer Science student at University at Buffalo. Researching deep learning applications in medical imaging — from model training through to production deployment.</p>
+    <div class="hero-links">
+      <a href="#publications" class="btn btn-primary">View Research</a>
+      <a href="#contact" class="btn btn-ghost">Get in Touch</a>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<section id="about">
+  <div class="section-label">About</div>
+  <h2>Building AI that <em>matters</em> in medicine</h2>
+  <div class="about-grid">
+    <div class="about-text">
+      <p>I'm an incoming MS Computer Science student at the University at Buffalo (Fall 2026), with a B.Tech in CSE from Jain University (CGPA 8.66/10, full scholarship). My research sits at the intersection of deep learning and clinical medicine — building models that genuinely assist clinicians.</p>
+      <p>My work spans ensemble deep learning for pneumonia detection, endoscopic disease classification with explainability, and end-to-end MLOps pipelines deployed on AWS. I'm actively exploring diffusion models, Vision Transformers, and self-supervised learning for biomedical imaging.</p>
+      <p>Beyond research, I enjoy building full systems — from training a model to wrapping it in a FastAPI service, containerizing with Docker, and shipping it to production via CI/CD.</p>
+    </div>
+    <div class="about-stats">
+      <div class="stat-card">
+        <div class="stat-num">2</div>
+        <div class="stat-label">IEEE Publications</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">99.2%</div>
+        <div class="stat-label">Best Model Accuracy</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">8.66</div>
+        <div class="stat-label">CGPA / 10</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">$14k</div>
+        <div class="stat-label">Merit Scholarship, Jain University</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<section id="publications">
+  <div class="section-label">Research</div>
+  <h2>Published Work</h2>
+  <div class="pub-list">
+    <div class="pub-card">
+      <div class="pub-venue">IEEE ICDSBS 2025</div>
+      <div class="pub-title">Ensemble Deep Learning for Pneumonia Detection from Chest X-Rays</div>
+      <p class="pub-desc">Developed an ensemble of DenseNet121, MobileNet, and EfficientNet for automated pneumonia detection, achieving 99.24% accuracy. Demonstrated the effectiveness of model ensembling with transfer learning for robust medical image classification.</p>
+      <div class="pub-tags">
+        <span class="tag">DenseNet121</span>
+        <span class="tag">MobileNet</span>
+        <span class="tag">EfficientNet</span>
+        <span class="tag">Ensemble Learning</span>
+        <span class="tag">Chest X-Ray</span>
+      </div>
+      <a href="https://doi.org/10.1109/ICDSBS63635.2025.11031996" target="_blank" class="pub-doi">DOI: 10.1109/ICDSBS63635.2025.11031996 ↗</a>
+    </div>
+    <div class="pub-card">
+      <div class="pub-venue">IEEE ICERCS 2024</div>
+      <div class="pub-title">Endoscopic Disease Classification with Explainable AI via U-Net and Grad-CAM</div>
+      <p class="pub-desc">Built a U-Net segmentation and classification pipeline for endoscopic disease detection with Grad-CAM visualizations for clinical explainability. Achieved 98.80% accuracy while providing interpretable visual explanations for model predictions.</p>
+      <div class="pub-tags">
+        <span class="tag">U-Net</span>
+        <span class="tag">Grad-CAM</span>
+        <span class="tag">Explainable AI</span>
+        <span class="tag">Endoscopy</span>
+        <span class="tag">Segmentation</span>
+      </div>
+      <a href="https://doi.org/10.1109/ICERCS63125.2024.10895860" target="_blank" class="pub-doi">DOI: 10.1109/ICERCS63125.2024.10895860 ↗</a>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<section id="projects">
+  <div class="section-label">Projects</div>
+  <h2>Things I've built</h2>
+  <div class="projects-grid">
+    <div class="project-card">
+      <div class="project-title">Vehicle Data MLOps Pipeline</div>
+      <p class="project-desc">Production-grade end-to-end MLOps pipeline with modular components for data ingestion, validation, transformation, training, and S3-based model registry. FastAPI inference service deployed on AWS EC2 via GitHub Actions CI/CD.</p>
+      <div class="project-stack">
+        <span class="stack-tag">Python</span>
+        <span class="stack-tag">FastAPI</span>
+        <span class="stack-tag">MongoDB</span>
+        <span class="stack-tag">AWS EC2/S3/ECR</span>
+        <span class="stack-tag">Docker</span>
+        <span class="stack-tag">CI/CD</span>
+      </div>
+    </div>
+    <div class="project-card">
+      <div class="project-title">EnsembleDx: Pneumonia Detection API</div>
+      <p class="project-desc">Trained ensemble model (DenseNet121 + MobileNet + EfficientNet) wrapped in a FastAPI inference service, containerized with Docker and deployed on AWS EC2. Model weights stored in S3 with automated CI/CD via GitHub Actions.</p>
+      <div class="project-stack">
+        <span class="stack-tag">PyTorch</span>
+        <span class="stack-tag">FastAPI</span>
+        <span class="stack-tag">AWS S3/EC2</span>
+        <span class="stack-tag">Docker</span>
+        <span class="stack-tag">CI/CD</span>
+      </div>
+    </div>
+    <div class="project-card">
+      <div class="project-title">Endoscopic Disease Classification</div>
+      <p class="project-desc">U-Net based segmentation and classification model for endoscopic imaging, achieving 98.80% accuracy. Incorporated Grad-CAM for explainability — published at IEEE ICERCS 2024.</p>
+      <div class="project-stack">
+        <span class="stack-tag">TensorFlow</span>
+        <span class="stack-tag">U-Net</span>
+        <span class="stack-tag">Grad-CAM</span>
+        <span class="stack-tag">Python</span>
+      </div>
+    </div>
+    <div class="project-card">
+      <div class="project-title">NYC Taxi Trip Duration Prediction</div>
+      <p class="project-desc">Compared XGBoost, Random Forest, and Linear Regression to forecast NYC taxi durations. Built end-to-end preprocessing pipelines with temporal, geospatial, and traffic features. Results stored in MongoDB.</p>
+      <div class="project-stack">
+        <span class="stack-tag">XGBoost</span>
+        <span class="stack-tag">Scikit-learn</span>
+        <span class="stack-tag">Pandas</span>
+        <span class="stack-tag">MongoDB</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<section id="skills">
+  <div class="section-label">Skills</div>
+  <h2>Technical Stack</h2>
+  <div class="skills-grid">
+    <div class="skill-group">
+      <div class="skill-group-title">Deep Learning</div>
+      <div class="skill-pills">
+        <span class="skill-pill">PyTorch</span>
+        <span class="skill-pill">TensorFlow</span>
+        <span class="skill-pill">CNNs</span>
+        <span class="skill-pill">Vision Transformers</span>
+        <span class="skill-pill">Diffusion Models</span>
+        <span class="skill-pill">U-Net</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title">ML & Data Science</div>
+      <div class="skill-pills">
+        <span class="skill-pill">Scikit-learn</span>
+        <span class="skill-pill">XGBoost</span>
+        <span class="skill-pill">Self-supervised Learning</span>
+        <span class="skill-pill">Transfer Learning</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title">Backend & Cloud</div>
+      <div class="skill-pills">
+        <span class="skill-pill">FastAPI</span>
+        <span class="skill-pill">REST APIs</span>
+        <span class="skill-pill">MongoDB</span>
+        <span class="skill-pill">AWS EC2/S3/ECR</span>
+        <span class="skill-pill">Docker</span>
+        <span class="skill-pill">GitHub Actions</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title">Languages</div>
+      <div class="skill-pills">
+        <span class="skill-pill">Python</span>
+        <span class="skill-pill">JavaScript</span>
+        <span class="skill-pill">TypeScript</span>
+        <span class="skill-pill">Java</span>
+        <span class="skill-pill">C</span>
+        <span class="skill-pill">Go</span>
+      </div>
+    </div>
+  </div>
+  <div class="fullstack-note">
+    <strong>Also comfortable with frontend work</strong> — React, TypeScript, and REST API integration. I've built end-to-end systems where the same person writes the model, the API, and the interface, which gives me an appreciation for how all the layers fit together.
+  </div>
+</section>
+
+<hr class="divider">
+
+<section id="experience">
+  <div class="section-label">Experience & Education</div>
+  <h2>Background</h2>
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-date">Fall 2026</div>
+      <div>
+        <div class="timeline-title">MS Computer Science</div>
+        <div class="timeline-org">University at Buffalo, SUNY</div>
+        <div class="timeline-desc">Research focus in medical AI, deep learning, and biomedical imaging. Pursuing RA positions in computer vision and medical image analysis for Spring 2027.</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">2021 – 2025</div>
+      <div>
+        <div class="timeline-title">B.Tech Computer Science & Engineering <span class="badge">Full Scholarship</span></div>
+        <div class="timeline-org">Jain University — CGPA 8.66 / 10</div>
+        <div class="timeline-desc">Awarded 100% SII Scholarship worth $14,000. Published two IEEE papers during undergraduate studies on medical image classification and endoscopic disease detection.</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">Jul 2023</div>
+      <div>
+        <div class="timeline-title">Data Science Intern</div>
+        <div class="timeline-org">Capabl Elite Techno Groups — Remote</div>
+        <div class="timeline-desc">Built ML regression models (XGBoost, Random Forest, Linear Regression) for NYC taxi trip duration prediction. Designed end-to-end preprocessing pipelines handling temporal, geospatial, and traffic features. Improved accuracy via hyperparameter tuning.</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">Jan 2024</div>
+      <div>
+        <div class="timeline-title">AWS Solutions Architect – Associate</div>
+        <div class="timeline-org">Amazon Web Services</div>
+        <div class="timeline-desc">Certified in designing distributed systems on AWS — EC2, S3, ECR, IAM, and cloud-native ML deployment pipelines.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<section id="contact">
+  <div class="section-label">Contact</div>
+  <h2>Let's connect</h2>
+  <div class="contact-inner">
+    <div class="contact-text">
+      <p>I'm actively looking for Research Assistant positions for Spring 2027 in medical AI, computer vision, and biomedical imaging. Open to fullstack and backend engineering roles where I can build end-to-end systems. If you're working on something interesting, I'd love to hear from you.</p>
+      <a href="mailto:pragyan0814@gmail.com" class="btn btn-primary">Send an Email</a>
+    </div>
+    <div class="contact-links">
+      <a href="mailto:pragyan0814@gmail.com" class="contact-link">
+        <div>
+          <span class="contact-link-label">Email</span>
+          <span class="contact-link-val">pragyan0814@gmail.com</span>
+        </div>
+      </a>
+      <a href="https://github.com/Pragyan127" target="_blank" class="contact-link">
+        <div>
+          <span class="contact-link-label">GitHub</span>
+          <span class="contact-link-val">github.com/Pragyan127</span>
+        </div>
+      </a>
+      <a href="https://www.linkedin.com/in/pragyan-dhungana-94186b222" target="_blank" class="contact-link">
+        <div>
+          <span class="contact-link-label">LinkedIn</span>
+          <span class="contact-link-val">pragyan-dhungana-94186b222</span>
+        </div>
+      </a>
+      <a href="https://doi.org/10.1109/ICDSBS63635.2025.11031996" target="_blank" class="contact-link">
+        <div>
+          <span class="contact-link-label">Latest Publication</span>
+          <span class="contact-link-val">IEEE ICDSBS 2025</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © 2026 Pragyan Dhungana &nbsp;·&nbsp; Built with GitHub Pages
+</footer>
+
+</body>
+</html>
